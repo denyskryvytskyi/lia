@@ -2,6 +2,26 @@
 
 namespace gdm
 {
+    mat4::mat4()
+    {
+        m[0][0] = 1.0f;
+        m[0][1] = 0.0f;
+        m[0][2] = 0.0f;
+        m[0][3] = 0.0f;
+        m[1][0] = 0.0f;
+        m[1][1] = 1.0f;
+        m[1][2] = 0.0f;
+        m[1][3] = 0.0f;
+        m[2][0] = 0.0f;
+        m[2][1] = 0.0f;
+        m[2][2] = 1.0f;
+        m[2][3] = 0.0f;
+        m[3][0] = 0.0f;
+        m[3][1] = 0.0f;
+        m[3][2] = 0.0f;
+        m[3][3] = 1.0f;
+    }
+    
     mat4::mat4(float m00, float m01, float m02, float m03,
         float m10, float m11, float m12, float m13,
         float m20, float m21, float m22, float m23,
@@ -48,8 +68,20 @@ namespace gdm
     mat4::mat4(float scalar)
     {
         m[0][0] = scalar;
+        m[0][1] = 0.0f;
+        m[0][2] = 0.0f;
+        m[0][3] = 0.0f;
+        m[1][0] = 0.0f;
         m[1][1] = scalar;
+        m[1][2] = 0.0f;
+        m[1][3] = 0.0f;
+        m[2][0] = 0.0f;
+        m[2][1] = 0.0f;
         m[2][2] = scalar;
+        m[2][3] = 0.0f;
+        m[3][0] = 0.0f;
+        m[3][1] = 0.0f;
+        m[3][2] = 0.0f;
         m[3][3] = scalar;
     }
 }

@@ -3,6 +3,7 @@
 #include "mathbase.h"
 #include "vec4.h"
 #include "vec3.h"
+#include <cmath>
 
 namespace gdm
 {
@@ -21,7 +22,10 @@ namespace gdm
         float m[4][4];
 
     public:
-        mat4() = default;
+        /**
+        * Constructs an identity matrix.
+        */
+        mat4();
 
         /**
         * Constructs a matrix initialized to the specified value.
@@ -59,7 +63,7 @@ namespace gdm
         mat4(vec4 row1, vec4 row2, vec4 row3, vec4 row4);
 
         /**
-         * Constructs an identity matrix.
+         * Constructs an matrix with scalar by diagonal.
          *
          * @param scalar Diagonal scalar value
          */
@@ -75,7 +79,7 @@ namespace gdm
             return m[i][j];
         }
 
-        inline float mat4::determinant() const
+        float determinant() const
         {
             float a0 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
             float a1 = m[0][0] * m[1][2] - m[0][2] * m[1][0];
@@ -91,6 +95,11 @@ namespace gdm
             float b5 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
 
             return (a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0);
+        }
+
+        vec4 GetRow(int index) const
+        {
+            return vec4(m[index][0], m[index][1], m[index][2], m[index][3]);
         }
     };
 
@@ -179,5 +188,53 @@ namespace gdm
             r1.x, r1.y, r1.z, dot(a, t),
             r2.x, r2.y, r2.z, -dot(d, s),
             r3.x, r3.y, r3.z, dot(c, s)));
+    }
+
+    inline mat4 transpose(const mat4& mat)
+    {
+        return mat4(vec4(mat(0, 0), mat(1, 0), mat(2, 0), mat(3, 0)),
+            vec4(mat(0, 1), mat(1, 1), mat(2, 1), mat(3, 1)),
+            vec4(mat(0, 2), mat(1, 2), mat(2, 2), mat(3, 2)),
+            vec4(mat(0, 3), mat(1, 3), mat(2, 3), mat(3, 3)));
+    }
+
+    inline mat4 translate(const mat4& mat, const vec3& translation)
+    {
+        vec4 translationRow = mat.GetRow(3);
+        translationRow.x += translation.x;
+        translationRow.y += translation.y;
+        translationRow.z += translation.z;
+
+        return mat4(mat.GetRow(0), mat.GetRow(1), mat.GetRow(2), translationRow);
+    }
+
+    /**
+    * @param angle The angle in radians
+    */
+    inline mat4 rotate(const mat4& mat, const float& angle, const vec3& axis)
+    {
+        float cos = std::cos(angle);
+        float sin = std::sin(angle);
+        float d = 1.0f - cos;
+
+        float x = axis.x * d;
+        float y = axis.y * d;
+        float z = axis.z * d;
+        float axay = x * axis.y;
+        float axaz = x * axis.y;
+        float ayaz = y * axis.z;
+
+        return mat4(cos + x * axis.x, axay - sin * axis.z, axaz + sin * axis.y, mat(0, 3),
+                    axay + sin * axis.z, cos + y * axis.y, ayaz - sin * axis.x, mat(1, 3),
+                    axaz - sin * axis.y, ayaz + sin * axis.x, cos + z * axis.z, mat(2, 3),
+                    mat(3, 0), mat(3, 1), mat(3, 2), mat(3, 3));
+    }
+
+    inline mat4 scale(const mat4& mat, const vec3& scale)
+    {
+        return mat4(mat(0, 0) * scale.x, mat(0, 1), mat(0, 2), mat(0, 3),
+                    mat(1, 0), mat(1, 1) * scale.y, mat(1, 2), mat(1, 3),
+                    mat(2, 0), mat(2, 1), mat(2, 2) * scale.z, mat(2, 3),
+                    mat(3, 0), mat(3, 1), mat(3, 2), mat(3, 3));
     }
 }
