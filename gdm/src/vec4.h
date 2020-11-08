@@ -19,6 +19,16 @@ namespace gdm
             : x(scalar), y(scalar), z(scalar), w(scalar)
         {}
 
+        float& operator [](int i)
+        {
+            return ((&x)[i]);
+        }
+
+        const float& operator [](int i) const
+        {
+            return ((&x)[i]);
+        }
+
         vec4& operator*=(float scalar)
         {
             x *= scalar;
@@ -82,5 +92,10 @@ namespace gdm
         stream << "vec3(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w << ")";
 
         return stream;
+    }
+
+    inline float dot(const vec4& v1, const vec4& v2)
+    {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
     }
 }

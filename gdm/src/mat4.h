@@ -1,6 +1,8 @@
 #pragma once
 
+#include "mathbase.h"
 #include "vec4.h"
+#include "vec3.h"
 
 namespace gdm
 {
@@ -10,13 +12,13 @@ namespace gdm
      *
      * 1   0   0   0
      * 0   1   0   0
-     * 0   0   0   1
+     * 0   0   1   0
      * tx  ty  tz  1
      */
     struct mat4
     {
     protected:
-        float m[16];
+        float m[4][4];
 
     public:
         mat4() = default;
@@ -65,12 +67,30 @@ namespace gdm
 
         float& operator()(int i, int j)
         {
-            return m[j + i * 4];
+            return m[i][j];
         }
 
         const float& operator()(int i, int j) const
         {
-            return m[j + i * 4];
+            return m[i][j];
+        }
+
+        inline float mat4::determinant() const
+        {
+            float a0 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+            float a1 = m[0][0] * m[1][2] - m[0][2] * m[1][0];
+            float a2 = m[0][0] * m[1][3] - m[0][3] * m[1][0];
+            float a3 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
+            float a4 = m[0][1] * m[1][3] - m[0][3] * m[1][1];
+            float a5 = m[0][2] * m[1][3] - m[0][3] * m[1][2];
+            float b0 = m[2][0] * m[3][1] - m[2][1] * m[3][0];
+            float b1 = m[2][0] * m[3][2] - m[2][2] * m[3][0];
+            float b2 = m[2][0] * m[3][3] - m[2][3] * m[3][0];
+            float b3 = m[2][1] * m[3][2] - m[2][2] * m[3][1];
+            float b4 = m[2][1] * m[3][3] - m[2][3] * m[3][1];
+            float b5 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
+
+            return (a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0);
         }
     };
 
@@ -115,5 +135,49 @@ namespace gdm
         stream << "}\n";
 
         return stream;
+    }
+
+    inline bool canBeInverse(const mat4& mat)
+    {
+        // if determinant close to zero, can't convert
+        return !(std::abs(mat.determinant()) <= TOLERANCE);
+    }
+
+    inline mat4 inverse(const mat4& mat)
+    {
+        // if determinant close to zero, can't convert
+        if (std::abs(mat.determinant()) <= TOLERANCE)
+            return mat4();
+
+        const vec3& a = vec3(mat(0, 0), mat(1, 0), mat(2, 0));
+        const vec3& b = vec3(mat(0, 1), mat(1, 1), mat(2, 1));
+        const vec3& c = vec3(mat(0, 2), mat(1, 2), mat(2, 2));
+        const vec3& d = vec3(mat(0, 3), mat(1, 3), mat(2, 3));
+
+        const float& x = mat(3, 0);
+        const float& y = mat(3, 1);
+        const float& z = mat(3, 2);
+        const float& w = mat(3, 3);
+
+        vec3 s = cross(a, b);
+        vec3 t = cross(c, d);
+        vec3 u = a * y - b * x;
+        vec3 v = c * w - d * z;
+
+        float invDet = 1.0F / (dot(s, v) + dot(t, u));
+        s *= invDet;
+        t *= invDet;
+        u *= invDet;
+        v *= invDet;
+
+        vec3 r0 = cross(b, v) + t * y;
+        vec3 r1 = cross(v, a) - t * x;
+        vec3 r2 = cross(d, u) + s * w;
+        vec3 r3 = cross(u, c) - s * z;
+
+        return (mat4(r0.x, r0.y, r0.z, -dot(b, t),
+            r1.x, r1.y, r1.z, dot(a, t),
+            r2.x, r2.y, r2.z, -dot(d, s),
+            r3.x, r3.y, r3.z, dot(c, s)));
     }
 }

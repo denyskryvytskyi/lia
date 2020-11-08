@@ -53,43 +53,43 @@ namespace gdm
         }
     };
 
-    vec2 operator*(const vec2& v, float scalar)
+    inline vec2 operator*(const vec2& v, float scalar)
     {
         return vec2(v.x * scalar, v.y * scalar);
     }
 
-    vec2 operator/(const vec2& v, float scalar)
+    inline vec2 operator/(const vec2& v, float scalar)
     {
         scalar = 1.0f / scalar;
         return vec2(v.x * scalar, v.y * scalar);
     }
 
-    vec2 operator-(const vec2& v)
+    inline vec2 operator-(const vec2& v)
     {
         return vec2(-v.x, -v.y);
     }
 
-    float magnitude(const vec2& v)
+    inline float magnitude(const vec2& v)
     {
         return sqrt(v.x * v.x + v.y * v.y);
     }
 
-    vec2 normalize(const vec2& v)
+    inline vec2 normalize(const vec2& v)
     {
         return v / magnitude(v);
     }
 
-    vec2 operator+(const vec2& first, const vec2& second)
+    inline vec2 operator+(const vec2& first, const vec2& second)
     {
         return (vec2(first.x + second.x, first.y + second.y));
     }
 
-    vec2 operator-(const vec2& first, const vec2& second)
+    inline vec2 operator-(const vec2& first, const vec2& second)
     {
         return (vec2(first.x - second.x, first.y - second.y));
     }
 
-    std::ostream& operator<<(std::ostream& stream, const vec2& vector)
+    inline std::ostream& operator<<(std::ostream& stream, const vec2& vector)
     {
         stream << "vec3(" << vector.x << ", " << vector.y << ")";
 

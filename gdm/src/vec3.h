@@ -45,8 +45,8 @@ namespace gdm
             z += v.z;
 
             return (*this);
-        } 
-        
+        }
+
         vec3& operator-=(const vec3& v)
         {
             x -= v.x;
@@ -57,46 +57,68 @@ namespace gdm
         }
     };
 
-    vec3 operator*(const vec3& v, float scalar)
+    inline vec3 operator*(const vec3& v, float scalar)
     {
         return vec3(v.x * scalar, v.y * scalar, v.z * scalar);
     }
-    
-    vec3 operator/(const vec3& v, float scalar)
+
+    inline vec3 operator/(const vec3& v, float scalar)
     {
         scalar = 1.0f / scalar;
         return vec3(v.x * scalar, v.y * scalar, v.z * scalar);
     }
-    
-    vec3 operator-(const vec3& v)
+
+    inline vec3 operator-(const vec3& v)
     {
         return vec3(-v.x, -v.y, -v.z);
     }
 
-    float magnitude(const vec3& v)
+    inline float magnitude(const vec3& v)
     {
         return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     }
 
-    vec3 normalize(const vec3& v)
+    inline vec3 normalize(const vec3& v)
     {
         return v / magnitude(v);
     }
 
-    vec3 operator+(const vec3& first, const vec3& second)
+    inline vec3 operator+(const vec3& first, const vec3& second)
     {
         return (vec3(first.x + second.x, first.y + second.y, first.z + second.z));
     }
 
-    vec3 operator-(const vec3& first, const vec3& second)
+    inline vec3 operator-(const vec3& first, const vec3& second)
     {
         return (vec3(first.x - second.x, first.y - second.y, first.z - second.z));
     }
 
-    std::ostream& operator<<(std::ostream& stream, const vec3& vector)
+    inline std::ostream& operator<<(std::ostream& stream, const vec3& vector)
     {
         stream << "vec3(" << vector.x << ", " << vector.y << ", " << vector.z << ")";
 
         return stream;
+    }
+
+    inline float dot(const vec3& v1, const vec3& v2)
+    {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    }
+
+    inline vec3 cross(const vec3& v1, const vec3& v2)
+    {
+        return vec3(v1.y * v2.z - v1.z * v2.y,
+            v1.z * v2.x - v1.x * v2.z,
+            v1.x * v2.y - v1.y * v2.x);
+    }
+
+    inline vec3 project(const vec3& v1, const vec3& v2)
+    {
+        return v1 * (dot(v1, v2) / dot(v2, v2));
+    }
+    
+    inline vec3 reject(const vec3& v1, const vec3& v2)
+    {
+        return v1 - v2 * (dot(v1, v2) / dot(v2, v2));
     }
 }
