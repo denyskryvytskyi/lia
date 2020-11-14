@@ -79,6 +79,11 @@ namespace gdm
             return m[i][j];
         }
 
+        float* ElementsPtr()
+        {
+            return reinterpret_cast<float*>(m);
+        }
+
         float determinant() const
         {
             float a0 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
@@ -236,5 +241,48 @@ namespace gdm
                     mat(1, 0), mat(1, 1) * scale.y, mat(1, 2), mat(1, 3),
                     mat(2, 0), mat(2, 1), mat(2, 2) * scale.z, mat(2, 3),
                     mat(3, 0), mat(3, 1), mat(3, 2), mat(3, 3));
+    }
+
+    inline mat4 orthographic(float left, float right, float bottom, float top, float near_, float far_)
+    {
+        return mat4(2.0f / (right - left), 0, 0, -((right + left) / (right - left)),
+                    0, 2.0f / (top - bottom), 0, -((top + bottom) / (top - bottom)),
+                    0, 0, -(2 / (far_ - near_)), -((far_ + near_) / (far_ - near_)),
+                    0, 0, 0, 1);
+    }
+
+    /**
+    * Creates a perspective projection matrix from the given parameters.
+    * 
+    * @param fov Field of View in radians that sets the width of the perspective frustum
+    * @param aspect Specifies the aspect ratio of the scene
+    * @param near Specifies the near plane of the perspective frustum
+    * @param far Specifies the far plane of the perspective frustum
+    */
+    inline mat4 perspective(float fov, float aspect, float near_, float far_)
+    {
+        float top = near_ * std::tan((fov / 2));
+        float bottom = -top;
+        float right = top * aspect;
+        float left = -right;
+
+        return mat4(2.0f / (right - left), 0, (right + left) / (right - left), 0,
+                    0, (2 * near_) / (top - bottom), (top + bottom) / (top - bottom), 0,
+                    0, 0, -((far_ + near_) / (far_ - near_)), -((2 * far_ * near_) / (far_ - near_)),
+                    0, 0, -1, 0);
+    }
+
+    inline mat4 lookAt(vec3 eyePosition, vec3 target, vec3 up)
+    {
+        vec3 cameraDirection = normalize(eyePosition - target);
+        vec3 cameraRight = normalize(cross(up, cameraDirection));
+        vec3 cameraUp = cross(cameraDirection, cameraRight);
+
+        mat4 result(cameraDirection.x, cameraDirection.y, cameraDirection.z, 0,
+                    cameraUp.x, cameraUp.y, cameraUp.z, 0,
+                    cameraDirection.x, cameraDirection.y, cameraDirection.z, 0,
+                    0, 0, 0, 1);
+
+        return translate(result, vec3(-eyePosition.x, -eyePosition.y, -eyePosition.z));
     }
 }
