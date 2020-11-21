@@ -155,17 +155,17 @@ namespace gdm
         }
     };
 
-    const quaternion operator+(const quaternion& q1, const quaternion& q2)
+    inline const quaternion operator+(const quaternion& q1, const quaternion& q2)
     {
         return quaternion(q1.x + q2.x, q1.y + q2.y, q1.z + q2.z, q1.w + q2.w);
     }
 
-    const quaternion operator-(const quaternion& q1, const quaternion& q2)
+    inline const quaternion operator-(const quaternion& q1, const quaternion& q2)
     {
         return quaternion(q1.x - q2.x, q1.y - q2.y, q1.z - q2.z, q1.w - q2.w);
     }
 
-    quaternion& operator*(const quaternion& q1, const quaternion& q2)
+    inline quaternion& operator*(const quaternion& q1, const quaternion& q2)
     {
         return quaternion(q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
             q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x,
@@ -173,22 +173,22 @@ namespace gdm
             q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z);
     }
 
-    const quaternion operator*(const quaternion& q, float scalar)
+    inline const quaternion operator*(const quaternion& q, float scalar)
     {
         return quaternion(q.x * scalar, q.y * scalar, q.z * scalar, q.w * scalar);
     }
 
-    const quaternion operator/(const quaternion& q, float scalar)
+    inline const quaternion operator/(const quaternion& q, float scalar)
     {
         return quaternion(q.x / scalar, q.y / scalar, q.z / scalar, q.w / scalar);
     }
 
-    quaternion Conjugate(const quaternion& q)
+    inline quaternion Conjugate(const quaternion& q)
     {
         return quaternion(-q.x, -q.y, -q.z, q.w);
     }
 
-    vec3& rotate(const vec3& v, const quaternion& q)
+    inline vec3& rotate(const vec3& v, const quaternion& q)
     {
         const vec3& b = q.GetVectorPart();
         float b2 = b.x * b.x + b.y * b.y + b.z * b.z;
@@ -199,7 +199,7 @@ namespace gdm
     /**
     * @param angle Angle in radians
     */
-    quaternion rotation(float angle, const vec3& unitVec)
+    inline quaternion rotation(float angle, const vec3& unitVec)
     {
         float halfAngle = angle * 0.5f;
         return quaternion((unitVec * sin(halfAngle)), cos(halfAngle));
@@ -208,7 +208,7 @@ namespace gdm
     /**
     * @param angle Angle in radians
     */
-    quaternion rotationX(float angle)
+    inline quaternion rotationX(float angle)
     {
         float halfAngle = angle * 0.5f;
         return quaternion(sin(halfAngle), 0, 0, cos(halfAngle));
@@ -217,7 +217,7 @@ namespace gdm
     /**
     * @param angle Angle in radians
     */
-    quaternion rotationY(float angle)
+    inline quaternion rotationY(float angle)
     {
         float halfAngle = angle * 0.5f;
         return quaternion(0, sin(halfAngle), 0, cos(halfAngle));
@@ -226,7 +226,7 @@ namespace gdm
     /**
     * @param angle Angle in radians
     */
-    quaternion rotationZ(float angle)
+    inline quaternion rotationZ(float angle)
     {
         float halfAngle = angle * 0.5f;
         return quaternion(0, 0, sin(halfAngle), cos(halfAngle));
