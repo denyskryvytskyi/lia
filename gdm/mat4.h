@@ -79,11 +79,6 @@ namespace gdm
             return m[i][j];
         }
 
-        float* ElementsPtr()
-        {
-            return reinterpret_cast<float*>(m);
-        }
-
         float determinant() const
         {
             float a0 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
@@ -106,7 +101,14 @@ namespace gdm
         {
             return vec4(m[index][0], m[index][1], m[index][2], m[index][3]);
         }
+
+        friend float* ElementsPtr(mat4& mat);
     };
+
+    inline float* ElementsPtr(mat4& mat)
+    {
+        return reinterpret_cast<float*>(mat.m);
+    }
 
     inline mat4 operator*(const mat4& mat1, const mat4& mat2)
     {
