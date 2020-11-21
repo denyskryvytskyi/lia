@@ -157,6 +157,9 @@ namespace gdm
         return !(std::abs(mat.determinant()) <= TOLERANCE);
     }
 
+    /**
+    * Warning: return identity matrix if the matrix cannot be inversed (determinant <= 0)
+    */
     inline mat4 inverse(const mat4& mat)
     {
         // if determinant close to zero, can't convert
@@ -245,10 +248,10 @@ namespace gdm
 
     inline mat4 orthographic(float left, float right, float bottom, float top, float near_, float far_)
     {
-        return mat4(2.0f / (right - left), 0, 0, -((right + left) / (right - left)),
-                    0, 2.0f / (top - bottom), 0, -((top + bottom) / (top - bottom)),
-                    0, 0, -(2 / (far_ - near_)), -((far_ + near_) / (far_ - near_)),
-                    0, 0, 0, 1);
+        return mat4(2.0f / (right - left), 0.0f, 0.0f, -((right + left) / (right - left)),
+                    0.0f, 2.0f / (top - bottom), 0.0f, -((top + bottom) / (top - bottom)),
+                    0.0f, 0.0f, -(2.0f / (far_ - near_)), -((far_ + near_) / (far_ - near_)),
+                    0.0f, 0.0f, 0.0f, 1.0f);
     }
 
     /**
@@ -261,15 +264,15 @@ namespace gdm
     */
     inline mat4 perspective(float fov, float aspect, float near_, float far_)
     {
-        float top = near_ * std::tan((fov / 2));
+        float top = near_ * std::tan((fov / 2.0f));
         float bottom = -top;
         float right = top * aspect;
         float left = -right;
 
-        return mat4(2.0f / (right - left), 0, (right + left) / (right - left), 0,
-                    0, (2 * near_) / (top - bottom), (top + bottom) / (top - bottom), 0,
-                    0, 0, -((far_ + near_) / (far_ - near_)), -((2 * far_ * near_) / (far_ - near_)),
-                    0, 0, -1, 0);
+        return mat4(2.0f / (right - left), 0.0f, (right + left) / (right - left), 0.0f,
+                    0.0f, (2.0f * near_) / (top - bottom), (top + bottom) / (top - bottom), 0.0f,
+                    0.0f, 0.0f, -((far_ + near_) / (far_ - near_)), -((2.0f * far_ * near_) / (far_ - near_)),
+                    0.0f, 0.0f, -1.0f, 0.0f);
     }
 
     inline mat4 lookAt(vec3 eyePosition, vec3 target, vec3 up)
@@ -278,10 +281,10 @@ namespace gdm
         vec3 cameraRight = normalize(cross(up, cameraDirection));
         vec3 cameraUp = cross(cameraDirection, cameraRight);
 
-        mat4 result(cameraDirection.x, cameraDirection.y, cameraDirection.z, 0,
-                    cameraUp.x, cameraUp.y, cameraUp.z, 0,
-                    cameraDirection.x, cameraDirection.y, cameraDirection.z, 0,
-                    0, 0, 0, 1);
+        mat4 result(cameraDirection.x, cameraDirection.y, cameraDirection.z, 0.0f,
+                    cameraUp.x, cameraUp.y, cameraUp.z, 0.0f,
+                    cameraDirection.x, cameraDirection.y, cameraDirection.z, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
 
         return translate(result, vec3(-eyePosition.x, -eyePosition.y, -eyePosition.z));
     }
