@@ -280,12 +280,12 @@ namespace gdm
 
     inline mat4 translate(const mat4& mat, const vec3& translation)
     {
-        vec4 translationRow = mat.GetRow(3);
-        translationRow.x += translation.x;
-        translationRow.y += translation.y;
-        translationRow.z += translation.z;
+        mat4 result;
+        result(3, 0) = translation.x;
+        result(3, 1) = translation.y;
+        result(3, 2) = translation.z;
 
-        return mat4(mat.GetRow(0), mat.GetRow(1), mat.GetRow(2), translationRow);
+        return result * mat;
     }
 
     /**
@@ -304,26 +304,28 @@ namespace gdm
         float axaz = x * axis.y;
         float ayaz = y * axis.z;
 
-        return mat4(cos + x * axis.x, axay - sin * axis.z, axaz + sin * axis.y, mat(0, 3),
-                    axay + sin * axis.z, cos + y * axis.y, ayaz - sin * axis.x, mat(1, 3),
-                    axaz - sin * axis.y, ayaz + sin * axis.x, cos + z * axis.z, mat(2, 3),
-                    mat(3, 0), mat(3, 1), mat(3, 2), mat(3, 3));
+        return mat4(cos + x * axis.x, axay - sin * axis.z, axaz + sin * axis.y, 0.0f,
+                    axay + sin * axis.z, cos + y * axis.y, ayaz - sin * axis.x, 0.0f,
+                    axaz - sin * axis.y, ayaz + sin * axis.x, cos + z * axis.z, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f) * mat;
     }
 
     inline mat4 scale(const mat4& mat, const vec3& scale)
     {
-        return mat4(mat(0, 0) * scale.x, mat(0, 1), mat(0, 2), mat(0, 3),
-                    mat(1, 0), mat(1, 1) * scale.y, mat(1, 2), mat(1, 3),
-                    mat(2, 0), mat(2, 1), mat(2, 2) * scale.z, mat(2, 3),
-                    mat(3, 0), mat(3, 1), mat(3, 2), mat(3, 3));
+        mat4 scaled;
+        scaled(0, 0) = scale.x;
+        scaled(1, 1) = scale.y;
+        scaled(2, 2) = scale.z;
+
+        return scaled * mat;
     }
 
     inline mat4 orthographic(float left, float right, float bottom, float top, float near_, float far_)
     {
-        return mat4(2.0f / (right - left), 0.0f, 0.0f, -((right + left) / (right - left)),
-                    0.0f, 2.0f / (top - bottom), 0.0f, -((top + bottom) / (top - bottom)),
-                    0.0f, 0.0f, -(2.0f / (far_ - near_)), -((far_ + near_) / (far_ - near_)),
-                    0.0f, 0.0f, 0.0f, 1.0f);
+        return mat4(2.0f / (right - left), 0.0f, 0.0f, 0.0f,
+                    0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
+                    0.0f, 0.0f, -(2.0f / (far_ - near_)), 0.0f,
+                    -((right + left) / (right - left)), -((top + bottom) / (top - bottom)), -((far_ + near_) / (far_ - near_)), 1.0f);
     }
 
     /**
