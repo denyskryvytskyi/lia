@@ -95,4 +95,23 @@ namespace gdm
 
         return stream;
     }
+
+    inline vec2 clamp(const vec2 vec, const vec2& min, const vec2& max)
+    {
+        vec2 clamped = vec;
+
+        // Clamp the x value.
+        if (vec.x < min.x)
+            clamped.x = min.x;
+        if (vec.x > max.x)
+            clamped.x = max.x;
+
+        // Clamp the y value.
+        if (vec.y < min.y)
+            clamped.y = min.y;
+        if (vec.y > max.y)
+            clamped.y = max.y;
+
+        return clamped;
+    }
 }
