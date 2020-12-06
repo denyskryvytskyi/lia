@@ -114,4 +114,9 @@ namespace gdm
 
         return clamped;
     }
+
+    inline float dot(const vec2& v1, const vec2& v2)
+    {
+        return v1.x * v2.x + v1.y * v2.y;
+    }
 }
