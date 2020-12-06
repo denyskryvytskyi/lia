@@ -15,4 +15,9 @@ namespace gdm
     {
         return radians * 57.29577951f;
     }
+
+    inline float clamp(float value, float min, float max)
+    {
+        return std::max(min, std::min(max, value));
+    }
 }
