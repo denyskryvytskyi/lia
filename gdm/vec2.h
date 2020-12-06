@@ -101,15 +101,15 @@ namespace gdm
         vec2 clamped = vec;
 
         // Clamp the x value.
-        if (vec.x < min.x)
+        if (clamped.x < min.x)
             clamped.x = min.x;
-        if (vec.x > max.x)
+        if (clamped.x > max.x)
             clamped.x = max.x;
 
         // Clamp the y value.
-        if (vec.y < min.y)
+        if (clamped.y < min.y)
             clamped.y = min.y;
-        if (vec.y > max.y)
+        if (clamped.y > max.y)
             clamped.y = max.y;
 
         return clamped;
