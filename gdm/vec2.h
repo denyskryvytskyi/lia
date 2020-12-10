@@ -96,7 +96,7 @@ namespace gdm
         return stream;
     }
 
-    inline vec2 clamp(const vec2 vec, const vec2& min, const vec2& max)
+    inline vec2 clamp(const vec2& vec, const vec2& min, const vec2& max)
     {
         vec2 clamped = vec;
 
