@@ -120,7 +120,7 @@ namespace gdm
         return v1.x * v2.x + v1.y * v2.y;
     }
 
-    gdm::vec2 rotatePoint(float angle, gdm::vec2 point, gdm::vec2 origin)
+    inline gdm::vec2 rotatePoint(float angle, gdm::vec2 point, gdm::vec2 origin)
     {
         return vec2(cos(angle) * (point.x - origin.x) - sin(angle) * (point.y - origin.y) + origin.x,
                     sin(angle) * (point.x - origin.x) + cos(angle) * (point.y - origin.y) + origin.y);
