@@ -2,7 +2,8 @@
 
 namespace gdm
 {
-    #define TOLERANCE 2e-37f
+    const float TOLERANCE = 2e-37f;
+    const double PI = 3.1415926535897931;
 
     // Conversion from degrees to radians
     inline float radians(float degrees)
