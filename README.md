@@ -1,5 +1,5 @@
 # gdm
-Game Development Mathematic library
+3D graphics mathematic library
 
 ## Getting Started
 
