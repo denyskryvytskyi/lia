@@ -1,5 +1,5 @@
 # gdm
-3D graphics mathematic library
+Mathematics library for 3D Computer Graphics Programming
 
 ## Getting Started
 
