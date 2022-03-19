@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cmath>
+#include <ostream>
+
 namespace lia
 {
     const float TOLERANCE = 2e-37f;

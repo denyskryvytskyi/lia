@@ -1,7 +1,6 @@
 #pragma once
 
-#include <cmath>
-#include <ostream>
+#include "mathbase.h"
 
 namespace lia
 {
