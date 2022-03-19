@@ -1,4 +1,4 @@
-# gdm
+# lia
 Mathematics library for 3D Computer Graphics Programming
 
 ## Getting Started
