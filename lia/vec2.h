@@ -119,7 +119,7 @@ namespace lia
         return v1.x * v2.x + v1.y * v2.y;
     }
 
-    inline lia::vec2 rotatePoint(float angle, lia::vec2 point, lia::vec2 origin)
+    inline vec2 rotatePoint(float angle, vec2 point, vec2 origin)
     {
         return vec2(cos(angle) * (point.x - origin.x) - sin(angle) * (point.y - origin.y) + origin.x,
                     sin(angle) * (point.x - origin.x) + cos(angle) * (point.y - origin.y) + origin.y);
