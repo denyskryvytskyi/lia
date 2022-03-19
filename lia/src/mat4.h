@@ -5,7 +5,7 @@
 #include "vec3.h"
 #include <cmath>
 
-namespace gdm
+namespace lia
 {
     /**
      * Vectors are treated as row, resulting in a matrix that is represented as follows,

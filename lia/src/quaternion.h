@@ -2,7 +2,7 @@
 #include "vec3.h"
 #include "mat4.h"
 
-namespace gdm
+namespace lia
 {
     struct quaternion
     {

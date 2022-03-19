@@ -3,7 +3,7 @@
 #include <cmath>
 #include <ostream>
 
-namespace gdm
+namespace lia
 {
     struct vec3
     {
