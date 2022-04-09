@@ -5,19 +5,19 @@ project(lia
         LANGUAGES CXX)
 
 set(LIA_SOURCES
-    "src/lia.h"
-    "src/lia.cpp"
-    "src/mathbase.h"
-    "src/quaternion.h"
-    "src/mat4.h"
-    "src/vec2.h"
-    "src/vec3.h"
-    "src/vec4.h"
-    "src/tests.h"
-    "src/tests.cpp"
+    "lia/lia.h"
+    "lia/lia.cpp"
+    "lia/mathbase.h"
+    "lia/quaternion.h"
+    "lia/mat4.h"
+    "lia/vec2.h"
+    "lia/vec3.h"
+    "lia/vec4.h"
+    "lia/tests.h"
+    "lia/tests.cpp"
 )
 
 add_library(lia ${LIA_SOURCES})
 
 target_include_directories(lia 
-    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
