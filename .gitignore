@@ -1,7 +1,7 @@
 # Directories
 **/bin/
 bin-int/
-Sandbox/
+build/
 
 # Files
 premake5.lua

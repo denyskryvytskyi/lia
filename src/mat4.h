@@ -7,7 +7,7 @@
 namespace lia
 {
     /**
-     * Vectors are treated as row, resulting in a matrix that is represented as follows,
+     * Vectors are treated as rows, resulting in a matrix that is represented as follows,
      * where tx, ty and tz are the translation components of the matrix:
      *
      * 1   0   0   0
@@ -150,6 +150,21 @@ namespace lia
             return m[i][j];
         }
 
+        vec4& operator[](int row_index)
+        {
+            return (*reinterpret_cast<vec4*>(m[row_index]));
+        }
+        
+        const vec4& operator[](int row_index) const
+        {
+            return (*reinterpret_cast<const vec4*>(m[row_index]));
+        }
+
+        const float* elementsPtr() const
+        {
+            return &(m[0][0]);
+        }
+
         float determinant() const
         {
             float a0 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
@@ -166,16 +181,6 @@ namespace lia
             float b5 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
 
             return (a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0);
-        }
-
-        vec4 GetRow(int index) const
-        {
-            return vec4(m[index][0], m[index][1], m[index][2], m[index][3]);
-        }
-
-        const float* ElementsPtr() const
-        {
-            return &(m[0][0]);
         }
     };
 
@@ -197,26 +202,26 @@ namespace lia
         }
 
         return mat4(p[0], p[1], p[2], p[3],
-            p[4], p[5], p[6], p[7],
-            p[8], p[9], p[10], p[11],
-            p[12], p[13], p[14], p[15]);
+                    p[4], p[5], p[6], p[7],
+                    p[8], p[9], p[10], p[11],
+                    p[12], p[13], p[14], p[15]);
     }
 
-    inline vec4 operator*(const mat4& mat, const vec4& vec)
+    inline vec4 operator*(const vec4& vec, const mat4& mat)
     {
-        return vec4(mat(0, 0) * vec.x + mat(0, 1) * vec.y + mat(0, 2) * vec.z + mat(0, 3) * vec.w,
-            mat(1, 0) * vec.x + mat(1, 1) * vec.y + mat(1, 2) * vec.z + mat(1, 3) * vec.w,
-            mat(2, 0) * vec.x + mat(2, 1) * vec.y + mat(2, 2) * vec.z + mat(2, 3) * vec.w,
-            mat(3, 0) * vec.x + mat(3, 1) * vec.y + mat(3, 2) * vec.z + mat(3, 3) * vec.w);
+        return vec4(mat(0, 0) * vec.x + mat(1, 0) * vec.y + mat(2, 0) * vec.z + mat(3, 0) * vec.w,
+                    mat(0, 1) * vec.x + mat(1, 1) * vec.y + mat(2, 1) * vec.z + mat(3, 1) * vec.w,
+                    mat(0, 2) * vec.x + mat(1, 2) * vec.y + mat(2, 2) * vec.z + mat(3, 2) * vec.w,
+                    mat(0, 3) * vec.x + mat(1, 3) * vec.y + mat(2, 3) * vec.z + mat(3, 3) * vec.w);
     }
 
     inline std::ostream& operator<<(std::ostream& stream, const mat4& mat)
     {
         stream << "mat4 {\n";
-        stream << mat(0, 0) << " " << mat(0, 1) << " " << mat(0, 2) << " " << mat(0, 3) << "\n";
-        stream << mat(1, 0) << " " << mat(1, 1) << " " << mat(1, 2) << " " << mat(1, 3) << "\n";
-        stream << mat(2, 0) << " " << mat(2, 1) << " " << mat(2, 2) << " " << mat(2, 3) << "\n";
-        stream << mat(3, 0) << " " << mat(3, 1) << " " << mat(3, 2) << " " << mat(3, 3) << "\n";
+        stream << mat[0] << "\n";
+        stream << mat[1] << "\n";
+        stream << mat[2] << "\n";
+        stream << mat[3] << "\n";
         stream << "}\n";
 
         return stream;
@@ -264,17 +269,17 @@ namespace lia
         vec3 r3 = cross(u, c) - s * z;
 
         return (mat4(r0.x, r0.y, r0.z, -dot(b, t),
-            r1.x, r1.y, r1.z, dot(a, t),
-            r2.x, r2.y, r2.z, -dot(d, s),
-            r3.x, r3.y, r3.z, dot(c, s)));
+                     r1.x, r1.y, r1.z, dot(a, t),
+                     r2.x, r2.y, r2.z, -dot(d, s),
+                     r3.x, r3.y, r3.z, dot(c, s)));
     }
 
     inline mat4 transpose(const mat4& mat)
     {
         return mat4(vec4(mat(0, 0), mat(1, 0), mat(2, 0), mat(3, 0)),
-            vec4(mat(0, 1), mat(1, 1), mat(2, 1), mat(3, 1)),
-            vec4(mat(0, 2), mat(1, 2), mat(2, 2), mat(3, 2)),
-            vec4(mat(0, 3), mat(1, 3), mat(2, 3), mat(3, 3)));
+                    vec4(mat(0, 1), mat(1, 1), mat(2, 1), mat(3, 1)),
+                    vec4(mat(0, 2), mat(1, 2), mat(2, 2), mat(3, 2)),
+                    vec4(mat(0, 3), mat(1, 3), mat(2, 3), mat(3, 3)));
     }
 
     inline mat4 translate(const mat4& mat, const vec3& translation)
@@ -284,29 +289,72 @@ namespace lia
         result(3, 1) = translation.y;
         result(3, 2) = translation.z;
 
-        return result * mat;
+        return mat * result;
     }
 
     /**
-    * @param angle The angle in radians
+    * @param angle The angle in degrees
+    * @param axis The unit vector
     */
     inline mat4 rotate(const mat4& mat, const float& angle, const vec3& axis)
     {
-        float cos = std::cos(angle);
-        float sin = std::sin(angle);
-        float d = 1.0f - cos;
+        float cos_ = std::cos(angle);
+        float sin_ = std::sin(angle);
+        float d = 1.0f - cos_;
 
         float x = axis.x * d;
         float y = axis.y * d;
         float z = axis.z * d;
         float axay = x * axis.y;
-        float axaz = x * axis.y;
+        float axaz = x * axis.z;
         float ayaz = y * axis.z;
 
-        return mat4(cos + x * axis.x, axay - sin * axis.z, axaz + sin * axis.y, 0.0f,
-                    axay + sin * axis.z, cos + y * axis.y, ayaz - sin * axis.x, 0.0f,
-                    axaz - sin * axis.y, ayaz + sin * axis.x, cos + z * axis.z, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f) * mat;
+        return mat * mat4(cos_ + x * axis.x, axay + sin_ * axis.z, axaz - sin_ * axis.y, 0.0f,
+                          axay - sin_ * axis.z, cos_ + y * axis.y, ayaz + sin_ * axis.x, 0.0f,
+                          axaz + sin_ * axis.y, ayaz - sin_ * axis.x, cos_ + z * axis.z, 0.0f,
+                          0.0f, 0.0f, 0.0f, 1.0f);
+    }
+
+    /**
+    * @param angle The angle in degrees
+    */
+    inline mat4 rotateX(const mat4& mat, const float& angle)
+    {
+        float cos_ = std::cos(angle);
+        float sin_ = std::sin(angle);
+
+        return mat * mat4(1, 0, 0, 0,
+                          0, cos_, sin_, 0,
+                          0, -sin_, cos_, 0,
+                          0, 0, 0, 1);
+    }
+    
+    /**
+    * @param angle The angle in degrees
+    */
+    inline mat4 rotateY(const mat4& mat, const float& angle)
+    {
+        float cos_ = std::cos(angle);
+        float sin_ = std::sin(angle);
+
+        return mat * mat4(cos_, 0, -sin_, 0,
+                          0, 1, 0, 0,
+                          sin_, 0, cos_, 0,
+                          0, 0, 0, 1);
+    }
+    
+    /**
+    * @param angle The angle in degrees
+    */
+    inline mat4 rotateZ(const mat4& mat, const float& angle)
+    {
+        float cos_ = std::cos(angle);
+        float sin_ = std::sin(angle);
+
+        return mat * mat4(cos_, sin_, 0, 0,
+                          -sin_, cos_, 1, 0,
+                          0, 0, 0, 0,
+                          0, 0, 0, 1);
     }
 
     inline mat4 scale(const mat4& mat, const vec3& scale)
@@ -316,14 +364,14 @@ namespace lia
         scaled(1, 1) = scale.y;
         scaled(2, 2) = scale.z;
 
-        return scaled * mat;
+        return mat * scaled;
     }
 
     inline mat4 orthographic(float left, float right, float bottom, float top, float near_, float far_)
     {
         return mat4(2.0f / (right - left), 0.0f, 0.0f, 0.0f,
                     0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
-                    0.0f, 0.0f, -(2.0f / (far_ - near_)), 0.0f,
+                    0.0f, 0.0f, -2.0f / (far_ - near_), 0.0f,
                     -((right + left) / (right - left)), -((top + bottom) / (top - bottom)), -((far_ + near_) / (far_ - near_)), 1.0f);
     }
 
@@ -354,11 +402,9 @@ namespace lia
         vec3 cameraRight = normalize(cross(up, cameraDirection));
         vec3 cameraUp = cross(cameraDirection, cameraRight);
 
-        mat4 result(cameraDirection.x, cameraDirection.y, cameraDirection.z, 0.0f,
+        return mat4(cameraDirection.x, cameraDirection.y, cameraDirection.z, 0.0f,
+                    cameraRight.x, cameraRight.y, cameraRight.z, 0.0f,
                     cameraUp.x, cameraUp.y, cameraUp.z, 0.0f,
-                    cameraDirection.x, cameraDirection.y, cameraDirection.z, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f);
-
-        return translate(result, vec3(-eyePosition.x, -eyePosition.y, -eyePosition.z));
+                    dot(cameraRight, eyePosition), dot(cameraUp, eyePosition), dot(cameraUp, eyePosition), 1.0f);
     }
 }

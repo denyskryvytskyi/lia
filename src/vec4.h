@@ -6,7 +6,10 @@ namespace lia
 {
     struct vec4
     {
-        float x, y, z, w;
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+        float w = 0.0f;
 
         vec4() = default;
 
@@ -18,14 +21,14 @@ namespace lia
             : x(scalar), y(scalar), z(scalar), w(scalar)
         {}
 
-        float& operator [](int i)
+        float& operator[](int index)
         {
-            return ((&x)[i]);
+            return ((&x)[index]);
         }
 
-        const float& operator [](int i) const
+        const float& operator[](int index) const
         {
-            return ((&x)[i]);
+            return ((&x)[index]);
         }
 
         vec4& operator*=(float scalar)
@@ -88,7 +91,7 @@ namespace lia
 
     inline std::ostream& operator<<(std::ostream& stream, const vec4& vector)
     {
-        stream << "vec3(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w << ")";
+        stream << "vec4(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w << ")";
 
         return stream;
     }

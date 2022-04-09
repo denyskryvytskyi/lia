@@ -6,7 +6,8 @@ namespace lia
 {
     struct vec2
     {
-        float x, y;
+        float x = 0.0f;
+        float y = 0.0f;
 
         vec2() = default;
 
@@ -17,6 +18,16 @@ namespace lia
         vec2(float scalar)
             : x(scalar), y(scalar)
         {}
+
+        float& operator[](int index)
+        {
+            return ((&x)[index]);
+        }
+
+        const float& operator[](int index) const
+        {
+            return ((&x)[index]);
+        }
 
         vec2& operator*=(float scalar)
         {
@@ -75,7 +86,7 @@ namespace lia
 
     inline vec2 normalize(const vec2& v)
     {
-        return v / magnitude(v);
+        return (v / magnitude(v));
     }
 
     inline vec2 operator+(const vec2& first, const vec2& second)
@@ -90,7 +101,7 @@ namespace lia
 
     inline std::ostream& operator<<(std::ostream& stream, const vec2& vector)
     {
-        stream << "vec3(" << vector.x << ", " << vector.y << ")";
+        stream << "vec2(" << vector.x << ", " << vector.y << ")";
 
         return stream;
     }
@@ -99,13 +110,11 @@ namespace lia
     {
         vec2 clamped = vec;
 
-        // Clamp the x value.
         if (clamped.x < min.x)
             clamped.x = min.x;
         if (clamped.x > max.x)
             clamped.x = max.x;
 
-        // Clamp the y value.
         if (clamped.y < min.y)
             clamped.y = min.y;
         if (clamped.y > max.y)

@@ -6,7 +6,9 @@ namespace lia
 {
     struct vec3
     {
-        float x, y, z;
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
 
         vec3() = default;
 
@@ -17,6 +19,16 @@ namespace lia
         vec3(float scalar)
             : x(scalar), y(scalar), z(scalar)
         {}
+
+        float& operator[](int index)
+        {
+            return ((&x)[index]);
+        }
+
+        const float& operator[](int index) const
+        {
+            return ((&x)[index]);
+        }
 
         vec3& operator*=(float scalar)
         {
@@ -72,16 +84,6 @@ namespace lia
         return vec3(-v.x, -v.y, -v.z);
     }
 
-    inline float magnitude(const vec3& v)
-    {
-        return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-    }
-
-    inline vec3 normalize(const vec3& v)
-    {
-        return v / magnitude(v);
-    }
-
     inline vec3 operator+(const vec3& first, const vec3& second)
     {
         return (vec3(first.x + second.x, first.y + second.y, first.z + second.z));
@@ -99,6 +101,16 @@ namespace lia
         return stream;
     }
 
+    inline float magnitude(const vec3& v)
+    {
+        return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    }
+
+    inline vec3 normalize(const vec3& v)
+    {
+        return (v / magnitude(v));
+    }
+
     inline float dot(const vec3& v1, const vec3& v2)
     {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
@@ -107,15 +119,15 @@ namespace lia
     inline vec3 cross(const vec3& v1, const vec3& v2)
     {
         return vec3(v1.y * v2.z - v1.z * v2.y,
-            v1.z * v2.x - v1.x * v2.z,
-            v1.x * v2.y - v1.y * v2.x);
+                    v1.z * v2.x - v1.x * v2.z,
+                    v1.x * v2.y - v1.y * v2.x);
     }
 
     inline vec3 project(const vec3& v1, const vec3& v2)
     {
-        return v1 * (dot(v1, v2) / dot(v2, v2));
+        return v2 * (dot(v1, v2) / dot(v2, v2));
     }
-    
+
     inline vec3 reject(const vec3& v1, const vec3& v2)
     {
         return v1 - v2 * (dot(v1, v2) / dot(v2, v2));
