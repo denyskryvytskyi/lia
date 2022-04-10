@@ -9,3 +9,6 @@ build/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+
+# local files
+configure-win-vs2022.bat
