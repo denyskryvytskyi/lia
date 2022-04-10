@@ -100,147 +100,35 @@ namespace lia
 
             std::cout << "--- Matrix rotation ---" << std::endl;
             float angleDegrees = 30.0f;
-            lia::vec3 axis = { 1, 1, 0 };
+            float angleRadians = lia::radians(angleDegrees);
+            lia::vec3 axis = { 1, 0, 0 };
 
-            std::cout << "RotateX: " << lia::rotateX(mat, angleDegrees) << std::endl;
-            std::cout << "RotateY: " << lia::rotateY(mat, angleDegrees) << std::endl;
-            std::cout << "RotateZ: " << lia::rotateZ(mat, angleDegrees) << std::endl;
+            std::cout << "RotateX: " << lia::rotateX(mat, angleRadians) << std::endl;
+            std::cout << "RotateY: " << lia::rotateY(mat, angleRadians) << std::endl;
+            std::cout << "RotateZ: " << lia::rotateZ(mat, angleRadians) << std::endl;
 
-            mat = lia::rotate(mat, angleDegrees, axis);
-            std::cout << "Rotated matrix by angle " << angleDegrees << " degrees around axis: " << axis << std::endl;
+            mat = lia::rotate(mat, angleRadians, axis);
+            std::cout << "Rotated matrix by angle " << angleRadians << " degrees around axis: " << axis << std::endl;
             std::cout << mat << std::endl;
             std::cout << vec << std::endl;
             std::cout << "Rotated position vector: " << vec * mat << std::endl;
         }
 
-        ///////
+        {
+            std::cout << "--------------------- Model View Projection Matrices ------------------------------" << std::endl;
+           
+            lia::mat4 model;
+            model = lia::scale(model, lia::vec3(5.0f, 6.0f, 7.0f));
+            model = lia::rotate(model, lia::radians(-55.0f), lia::vec3(0.0f, 0.0f, 1.0f));
 
-        //lia::mat4 projT = lia::orthographic(-4.0f, 4.0f, -3.0f, 3.0f, -1.0f, 1.0f);
-        //lia::mat4 modelT;
-        //modelT = lia::rotate(modelT, lia::radians(-55.0f), lia::vec3(0.0f, 0.0f, 1.0f));
-        //lia::mat4 viewT;
-        //viewT = lia::translate(viewT, lia::vec3(2.0f, 3.0f, 4.0f));
-        //lia::mat4 modelT;
-        //modelT = lia::scale(modelT, lia::vec3(5.0f, 6.0f, 7.0f));
+            lia::mat4 view;
+            view = lia::translate(view, lia::vec3(2.0f, 3.0f, 4.0f));
 
-        //lia::mat4 vm = modelT * viewT;
+            lia::mat4 proj = lia::orthographic(-4.0f, 4.0f, -3.0f, 3.0f, -1.0f, 1.0f);
 
-        //std::cout << lia::transpose(vm) << std::endl;
+            lia::mat4 mvp = model * view * proj;
 
-        //lia::mat4 pvT = projT * viewT;
-        //lia::mat4 vpT = viewT * projT;
-        //lia::mat4 mpT = projT * modelT;
-        //lia::mat4 mvpT = projT * viewT * modelT;
-
-
-        //std::cout << "-----------------Matrix----------------\n";
-
-        //{
-        //    lia::mat4 mat1(0, 2, 3, 1,
-        //        2, 1, 5, 3,
-        //        3, 4, 1, 6,
-        //        1, 2, 3, 1);
-        //    lia::mat4 mat2(1, 2, 3, 4,
-        //        3, 2, 1, 3,
-        //        2, 5, 2, 1,
-        //        6, 3, 6, 1);
-
-        //    lia::mat4 matT(0.25f, 0, 0, 0,
-        //        0, 0.333f, 0, 0,
-        //        0, 0, 1, 0,
-        //        0, 0, 0, 1);
-        //    
-        //    lia::mat4 matT1(1, 0, 0, 0,
-        //        0, 1, 0, 0,
-        //        0, 0, 1, 0,
-        //        0, 1, 0, 1);
-
-        //    // mat 1
-        //    std::cout << "First matrix: ";
-        //    std::cout << mat1 << std::endl;
-        //    // mat 2
-        //    std::cout << "Second matrix: ";
-        //    std::cout << mat2 << std::endl;
-        //    // product
-        //    std::cout << "Product of matrices: ";
-        //    std::cout << mat1 * mat2 << std::endl; 
-        //    
-        //    
-        //    // product Test
-        //    std::cout << "Test Product of matrices: ";
-        //    std::cout << matT * matT1 << std::endl;
-
-        //    // inverse matrix of mat1
-        //    if (lia::canBeInverse(mat1))
-        //    {
-        //        lia::mat4 inv1 = lia::inverse(mat1);
-        //        std::cout << "Inverse of the first matrix: ";
-        //        std::cout << inv1 << std::endl;
-        //        // check, should be identity matrix
-        //        std::cout << "Check inverse matrix. Product of first and inverse matrix (should be identity matrix): ";
-        //        std::cout << mat1 * inv1 << std::endl;
-
-        //        // determinant of first matrix
-        //        std::cout << "Determinant = " << mat1.determinant() << " ." << std::endl;
-        //    }
-        //    else
-        //    {
-        //        std::cout << "Determinant = " << mat1.determinant() << ". Matrix can't be inversed!" << std::endl;
-        //    }
-
-        //    std::cout << std::endl;
-        //    lia::mat4 mat4;
-        //    std::cout << "Matrix four:\n" << mat4 << std::endl;
-        //    mat4 = lia::translate(mat4, lia::vec3(1.0f, 1.0f, 2.0f));
-        //    std::cout << "Translated fourth Matrix:\n" << mat4 << std::endl;
-        //    std::cout << "Transposed fourth matrix:\n" << lia::transpose(mat4) << std::endl;
-
-        //    lia::mat4 matRot;
-        //    std::cout << "Rotation test:\n X axis:" << lia::rotate(matRot, lia::radians(90.0f), lia::vec3(1.0f, 0.0f, 0.0f)) << std::endl;
-        //    std::cout << "Y axis:" << lia::rotate(matRot, lia::radians(90.0f), lia::vec3(0.0f, 1.0f, 0.0f)) << std::endl;
-        //    std::cout << "Z axis:" << lia::rotate(matRot, lia::radians(90.0f), lia::vec3(0.0f, 0.0f, 1.0f)) << std::endl;
-        //    std::cout << "All axis:" << lia::rotate(matRot, lia::radians(90.0f), lia::vec3(1.0f, 1.0f, 1.0f)) << std::endl;
-
-
-        //    lia::mat4 matScale;
-        //    std::cout << "Scale test:" << lia::scale(matScale, lia::vec3(1.5f, 3.0f, 2.0f));
-        //}
-
-        //std::cout << "===================================" << std::endl;
-
-        //{
-        //    lia::Matrix4D mat1(0, 2, 3, 1,
-        //        2, 1, 5, 3,
-        //        3, 4, 1, 6,
-        //        1, 2, 3, 1);
-        //    lia::Matrix4D mat2(1, 2, 3, 4,
-        //        3, 2, 1, 3,
-        //        2, 5, 2, 1,
-        //        6, 3, 6, 1);
-
-        //    // multiplication
-        //    lia::Matrix4D mat3 = mat1 * mat2;
-
-        //    // mat 1
-        //    std::cout << mat1 << std::endl;
-        //    // mat 2
-        //    std::cout << mat2 << std::endl;
-        //    // multi result
-        //    std::cout << mat3 << std::endl;
-
-        //    // inverse matrix of mat1
-        //    lia::Matrix4D inv1 = lia::Inverse(mat1);
-        //    std::cout << inv1 << std::endl;
-
-        //    // check, should be identity matrix
-        //    std::cout << mat1 * inv1 << std::endl;
-
-            //lia::Matrix4D mat4D();
-            //std::cout << "4D x:\n" << lia::MakeRotation(lia::radians(90.0f), lia::vec3(1.0f, 0.0f, 0.0f));
-            //std::cout << "4D y:\n" << lia::MakeRotation(lia::radians(90.0f), lia::vec3(0.0f, 1.0f, 0.0f));
-            //std::cout << "4D z:\n" << lia::MakeRotation(lia::radians(90.0f), lia::vec3(0.0f, 0.0f, 1.0f));
-            //std::cout << "4D all:\n" << lia::MakeRotation(lia::radians(90.0f), lia::vec3(1.0f, 1.0f, 1.0f));
-
-        //}
+            std::cout << "MVP matrix: " << mvp << std::endl;
+        }
     }
 }
