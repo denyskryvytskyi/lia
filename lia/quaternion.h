@@ -166,7 +166,7 @@ namespace lia
         return quaternion(q1.x - q2.x, q1.y - q2.y, q1.z - q2.z, q1.w - q2.w);
     }
 
-    inline quaternion& operator*(const quaternion& q1, const quaternion& q2)
+    inline quaternion operator*(const quaternion& q1, const quaternion& q2)
     {
         return quaternion(q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
             q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x,
@@ -189,7 +189,7 @@ namespace lia
         return quaternion(-q.x, -q.y, -q.z, q.w);
     }
 
-    inline vec3& rotate(const vec3& v, const quaternion& q)
+    inline vec3 rotate(const vec3& v, const quaternion& q)
     {
         const vec3& b = q.GetVectorPart();
         float b2 = b.x * b.x + b.y * b.y + b.z * b.z;
