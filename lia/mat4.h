@@ -293,7 +293,7 @@ namespace lia
     }
 
     /**
-    * @param angle The angle in degrees
+    * @param angle The angle in radians
     * @param axis The unit vector
     */
     inline mat4 rotate(const mat4& mat, const float& angle, const vec3& axis)
@@ -316,7 +316,7 @@ namespace lia
     }
 
     /**
-    * @param angle The angle in degrees
+    * @param angle The angle in radians
     */
     inline mat4 rotateX(const mat4& mat, const float& angle)
     {
@@ -330,7 +330,7 @@ namespace lia
     }
     
     /**
-    * @param angle The angle in degrees
+    * @param angle The angle in radians
     */
     inline mat4 rotateY(const mat4& mat, const float& angle)
     {
@@ -344,7 +344,7 @@ namespace lia
     }
     
     /**
-    * @param angle The angle in degrees
+    * @param angle The angle in radians
     */
     inline mat4 rotateZ(const mat4& mat, const float& angle)
     {
