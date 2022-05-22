@@ -390,10 +390,10 @@ namespace lia
         float right = top * aspect;
         float left = -right;
 
-        return mat4(2.0f / (right - left), 0.0f, (right + left) / (right - left), 0.0f,
-                    0.0f, (2.0f * near_) / (top - bottom), (top + bottom) / (top - bottom), 0.0f,
-                    0.0f, 0.0f, -((far_ + near_) / (far_ - near_)), -((2.0f * far_ * near_) / (far_ - near_)),
-                    0.0f, 0.0f, -1.0f, 0.0f);
+        return mat4((2.0f * near_) / (right - left), 0.0f, 0.0f, 0.0f,
+                    0.0f, (2.0f * near_) / (top - bottom), 0.0f, 0.0f,
+                    (right + left) / (right - left), (top + bottom) / (top - bottom), -((far_ + near_) / (far_ - near_)), -1.0f,
+                    0.0f, 0.0f, -((2.0f * near_ * far_) / (far_ - near_)), 0.0f);
     }
 
     inline mat4 lookAt(vec3 eyePosition, vec3 target, vec3 up)
