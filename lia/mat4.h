@@ -296,11 +296,13 @@ namespace lia
     * @param angle The angle in radians
     * @param axis The unit vector
     */
-    inline mat4 rotate(const mat4& mat, const float& angle, const vec3& axis)
+    inline mat4 rotate(const mat4& mat, const float& angle, const vec3& vec)
     {
         float cos_ = std::cos(angle);
         float sin_ = std::sin(angle);
         float d = 1.0f - cos_;
+
+        const vec3 axis = normalize(vec);
 
         float x = axis.x * d;
         float y = axis.y * d;
