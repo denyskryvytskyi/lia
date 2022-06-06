@@ -3,13 +3,13 @@ Mathematics library for 3D Computer Graphics Programming
 
 ## Getting Started
 
-You can clone repository using git:
+You can clone repository:
 
 `git clone https://github.com/kryvytskyidenys/lia`
 
 You can add lia as static library to your project using cmake.
 
-Also there is tests.cpp files with simple operations to see usage examples.
+Also there is tests.cpp file with usage examples.
 
 ## Features
 
