@@ -400,13 +400,13 @@ namespace lia
 
     inline mat4 lookAt(vec3 eyePosition, vec3 target, vec3 up)
     {
-        vec3 cameraDirection = normalize(eyePosition - target);
-        vec3 cameraRight = normalize(cross(up, cameraDirection));
-        vec3 cameraUp = cross(cameraDirection, cameraRight);
+        const vec3 cameraDirection = normalize(eyePosition - target);
+        const vec3 cameraRight = normalize(cross(up, cameraDirection));
+        const vec3 cameraUp = cross(cameraDirection, cameraRight);
 
-        return mat4(cameraDirection.x, cameraDirection.y, cameraDirection.z, 0.0f,
-                    cameraRight.x, cameraRight.y, cameraRight.z, 0.0f,
-                    cameraUp.x, cameraUp.y, cameraUp.z, 0.0f,
-                    dot(cameraRight, eyePosition), dot(cameraUp, eyePosition), dot(cameraUp, eyePosition), 1.0f);
+        return mat4(cameraRight.x, cameraUp.x, cameraDirection.x, 0.0f,
+                    cameraRight.y, cameraUp.y, cameraDirection.y, 0.0f,
+                    cameraRight.z, cameraUp.z, cameraDirection.z, 0.0f,
+                    -dot(cameraRight, eyePosition), -dot(cameraUp, eyePosition), -dot(cameraDirection, eyePosition), 1.0f);
     }
 }
