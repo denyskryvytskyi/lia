@@ -354,8 +354,8 @@ namespace lia
         float sin_ = std::sin(angle);
 
         return mat * mat4(cos_, sin_, 0, 0,
-                          -sin_, cos_, 1, 0,
-                          0, 0, 0, 0,
+                          -sin_, cos_, 0, 0,
+                          0, 0, 1, 0,
                           0, 0, 0, 1);
     }
 
