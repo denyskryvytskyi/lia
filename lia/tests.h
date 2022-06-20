@@ -1,6 +1,5 @@
 #pragma once
 
-namespace lia
-{
-    void tests();
+namespace lia {
+void tests();
 }
