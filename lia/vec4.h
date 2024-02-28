@@ -75,6 +75,11 @@ struct vec4 {
 
         return (*this);
     }
+
+    float* elementsPtr()
+    {
+        return &(x);
+    }
 };
 
 inline vec4 operator*(const vec4& v, float scalar)

@@ -61,6 +61,11 @@ struct vec2 {
 
         return (*this);
     }
+
+    float* elementsPtr()
+    {
+        return &(x);
+    }
 };
 
 inline vec2 operator*(const vec2& v, float scalar)
