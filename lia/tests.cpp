@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ostream>
 
 #include "lia.h"
 #include "tests.h"
@@ -9,6 +10,11 @@ void tests()
     std::cout << "Sandbox" << std::endl;
 
     std::cout << "-----------------Test----------------\n";
+
+    std::cout << isEqual(10.0f, 10.0f) << std::endl;
+    std::cout << isEqual(10.0f, 11.0f) << std::endl;
+    std::cout << isEqual(10.0, 10.0) << std::endl;
+    std::cout << isEqual(10.0, 11.0) << std::endl;
 
     lia::vec4 vec(2.0f);
     std::cout << vec << std::endl;
