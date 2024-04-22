@@ -2,19 +2,21 @@
 
 #include "mathbase.h"
 
+#include <ostream>
+
 namespace lia {
 struct vec2 {
-    float x = 0.0f;
-    float y = 0.0f;
+    float x { 0.0f };
+    float y { 0.0f };
 
     vec2() = default;
 
-    vec2(float xx, float yy)
+    vec2(const float xx, const float yy)
         : x(xx)
         , y(yy)
     { }
 
-    vec2(float scalar)
+    vec2(const float scalar)
         : x(scalar)
         , y(scalar)
     { }

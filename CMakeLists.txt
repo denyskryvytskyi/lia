@@ -5,19 +5,16 @@ project(lia
         LANGUAGES CXX)
 
 set(LIA_SOURCES
-    "lia/lia.h"
     "lia/lia.cpp"
-    "lia/mathbase.h"
-    "lia/quaternion.h"
-    "lia/mat4.h"
-    "lia/vec2.h"
-    "lia/vec3.h"
-    "lia/vec4.h"
-    "lia/tests.h"
-    "lia/tests.cpp"
 )
+
+option(LIA_BUILD_TESTS "Build the LIA tests" OFF)
 
 add_library(lia ${LIA_SOURCES})
 
 target_include_directories(lia 
     INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (LIA_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()

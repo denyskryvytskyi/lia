@@ -4,6 +4,8 @@
 #include "vec3.h"
 #include "vec4.h"
 
+#include <ostream>
+
 namespace lia {
 /**
  * Vectors are treated as rows, resulting in a matrix that is represented as follows,
@@ -165,18 +167,18 @@ public:
 
     float determinant() const
     {
-        float a0 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
-        float a1 = m[0][0] * m[1][2] - m[0][2] * m[1][0];
-        float a2 = m[0][0] * m[1][3] - m[0][3] * m[1][0];
-        float a3 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
-        float a4 = m[0][1] * m[1][3] - m[0][3] * m[1][1];
-        float a5 = m[0][2] * m[1][3] - m[0][3] * m[1][2];
-        float b0 = m[2][0] * m[3][1] - m[2][1] * m[3][0];
-        float b1 = m[2][0] * m[3][2] - m[2][2] * m[3][0];
-        float b2 = m[2][0] * m[3][3] - m[2][3] * m[3][0];
-        float b3 = m[2][1] * m[3][2] - m[2][2] * m[3][1];
-        float b4 = m[2][1] * m[3][3] - m[2][3] * m[3][1];
-        float b5 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
+        const float a0 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+        const float a1 = m[0][0] * m[1][2] - m[0][2] * m[1][0];
+        const float a2 = m[0][0] * m[1][3] - m[0][3] * m[1][0];
+        const float a3 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
+        const float a4 = m[0][1] * m[1][3] - m[0][3] * m[1][1];
+        const float a5 = m[0][2] * m[1][3] - m[0][3] * m[1][2];
+        const float b0 = m[2][0] * m[3][1] - m[2][1] * m[3][0];
+        const float b1 = m[2][0] * m[3][2] - m[2][2] * m[3][0];
+        const float b2 = m[2][0] * m[3][3] - m[2][3] * m[3][0];
+        const float b3 = m[2][1] * m[3][2] - m[2][2] * m[3][1];
+        const float b4 = m[2][1] * m[3][3] - m[2][3] * m[3][1];
+        const float b5 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
 
         return (a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0);
     }
@@ -261,16 +263,16 @@ inline mat4 inverse(const mat4& mat)
     vec3 u = a * y - b * x;
     vec3 v = c * w - d * z;
 
-    float invDet = 1.0F / (dot(s, v) + dot(t, u));
+    const float invDet = 1.0f / (dot(s, v) + dot(t, u));
     s *= invDet;
     t *= invDet;
     u *= invDet;
     v *= invDet;
 
-    vec3 r0 = cross(b, v) + t * y;
-    vec3 r1 = cross(v, a) - t * x;
-    vec3 r2 = cross(d, u) + s * w;
-    vec3 r3 = cross(u, c) - s * z;
+    const vec3 r0 = cross(b, v) + t * y;
+    const vec3 r1 = cross(v, a) - t * x;
+    const vec3 r2 = cross(d, u) + s * w;
+    const vec3 r3 = cross(u, c) - s * z;
 
     return (mat4(r0.x, r0.y, r0.z, -dot(b, t),
                  r1.x, r1.y, r1.z, dot(a, t),
@@ -302,18 +304,18 @@ inline mat4 translate(const mat4& mat, const vec3& translation)
  */
 inline mat4 rotate(const mat4& mat, const float& angle, const vec3& vec)
 {
-    float cos_ = std::cos(angle);
-    float sin_ = std::sin(angle);
-    float d = 1.0f - cos_;
+    const float cos_ = std::cos(angle);
+    const float sin_ = std::sin(angle);
+    const float d = 1.0f - cos_;
 
     const vec3 axis = normalize(vec);
 
-    float x = axis.x * d;
-    float y = axis.y * d;
-    float z = axis.z * d;
-    float axay = x * axis.y;
-    float axaz = x * axis.z;
-    float ayaz = y * axis.z;
+    const float x = axis.x * d;
+    const float y = axis.y * d;
+    const float z = axis.z * d;
+    const float axay = x * axis.y;
+    const float axaz = x * axis.z;
+    const float ayaz = y * axis.z;
 
     return mat * mat4(cos_ + x * axis.x, axay + sin_ * axis.z, axaz - sin_ * axis.y, 0.0f, axay - sin_ * axis.z, cos_ + y * axis.y, ayaz + sin_ * axis.x, 0.0f, axaz + sin_ * axis.y, ayaz - sin_ * axis.x, cos_ + z * axis.z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 }
@@ -323,8 +325,8 @@ inline mat4 rotate(const mat4& mat, const float& angle, const vec3& vec)
  */
 inline mat4 rotateX(const mat4& mat, const float& angle)
 {
-    float cos_ = std::cos(angle);
-    float sin_ = std::sin(angle);
+    const float cos_ = std::cos(angle);
+    const float sin_ = std::sin(angle);
 
     return mat * mat4(1, 0, 0, 0, 0, cos_, sin_, 0, 0, -sin_, cos_, 0, 0, 0, 0, 1);
 }
@@ -334,8 +336,8 @@ inline mat4 rotateX(const mat4& mat, const float& angle)
  */
 inline mat4 rotateY(const mat4& mat, const float& angle)
 {
-    float cos_ = std::cos(angle);
-    float sin_ = std::sin(angle);
+    const float cos_ = std::cos(angle);
+    const float sin_ = std::sin(angle);
 
     return mat * mat4(cos_, 0, -sin_, 0, 0, 1, 0, 0, sin_, 0, cos_, 0, 0, 0, 0, 1);
 }
@@ -345,8 +347,8 @@ inline mat4 rotateY(const mat4& mat, const float& angle)
  */
 inline mat4 rotateZ(const mat4& mat, const float& angle)
 {
-    float cos_ = std::cos(angle);
-    float sin_ = std::sin(angle);
+    const float cos_ = std::cos(angle);
+    const float sin_ = std::sin(angle);
 
     return mat * mat4(cos_, sin_, 0, 0, -sin_, cos_, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 }
@@ -379,10 +381,10 @@ inline mat4 orthographic(float left, float right, float bottom, float top, float
  */
 inline mat4 perspective(float fov, float aspect, float near_, float far_)
 {
-    float top = near_ * std::tan((fov / 2.0f));
-    float bottom = -top;
-    float right = top * aspect;
-    float left = -right;
+    const float top = near_ * std::tan((fov / 2.0f));
+    const float bottom = -top;
+    const float right = top * aspect;
+    const float left = -right;
 
     return mat4((2.0f * near_) / (right - left), 0.0f, 0.0f, 0.0f,
                 0.0f, (2.0f * near_) / (top - bottom), 0.0f, 0.0f,

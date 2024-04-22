@@ -1,20 +1,19 @@
 #include <iostream>
 #include <ostream>
 
-#include "lia.h"
 #include "tests.h"
+#include <lia/lia.h>
 
-namespace lia {
-void tests()
+int main()
 {
     std::cout << "Sandbox" << std::endl;
 
     std::cout << "-----------------Test----------------\n";
 
-    std::cout << isEqual(10.0f, 10.0f) << std::endl;
-    std::cout << isEqual(10.0f, 11.0f) << std::endl;
-    std::cout << isEqual(10.0, 10.0) << std::endl;
-    std::cout << isEqual(10.0, 11.0) << std::endl;
+    std::cout << lia::isEqual(10.0f, 10.0f) << std::endl;
+    std::cout << lia::isEqual(10.0f, 11.0f) << std::endl;
+    std::cout << lia::isEqual(10.0, 10.0) << std::endl;
+    std::cout << lia::isEqual(10.0, 11.0) << std::endl;
 
     lia::vec4 vec(2.0f);
     std::cout << vec << std::endl;
@@ -134,5 +133,7 @@ void tests()
 
         std::cout << "MVP matrix: " << mvp << std::endl;
     }
+
+    system("pause");
+    return 0;
 }
-} // namespace lia

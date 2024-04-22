@@ -5,28 +5,43 @@
 
 namespace lia {
 struct quaternion {
-    float x, y, z, w;
+    float x { 0.0f };
+    float y { 0.0f };
+    float z { 0.0f };
+    float w { 1.0f };
 
-    quaternion()
-        : x(0)
-        , y(0)
-        , z(0)
-        , w(1)
-    { }
+    quaternion() = default;
 
-    quaternion(float xx, float yy, float zz, float s)
+    quaternion(const float xx, const float yy, const float zz, const float s)
         : x(xx)
         , y(yy)
         , z(zz)
         , w(s)
     { }
 
-    quaternion(const vec3& v, float s)
+    quaternion(const vec3& v, const float s)
         : x(v.x)
         , y(v.y)
         , z(v.z)
         , w(s)
     { }
+
+    quaternion(const vec3& eulerAngles)
+    {
+        const vec3 halfAngles = eulerAngles * 0.5f;
+
+        const float cy = cos(halfAngles.z);
+        const float sy = sin(halfAngles.z);
+        const float cp = cos(halfAngles.y);
+        const float sp = sin(halfAngles.y);
+        const float cr = cos(halfAngles.x);
+        const float sr = sin(halfAngles.x);
+
+        x = sr * cp * cy - cr * sp * sy;
+        y = cr * sp * cy + sr * cp * sy;
+        z = cr * cp * sy - sr * sp * cy;
+        w = cr * cp * cy + sr * sp * sy;
+    }
 
     vec3& GetVectorPart()
     {
@@ -98,14 +113,14 @@ struct quaternion {
      */
     void setRotationMatrix(const mat4& m)
     {
-        float m00 = m(0, 0);
-        float m11 = m(1, 1);
-        float m22 = m(2, 2);
-        float sum = m00 + m11 + m22;
+        const float m00 = m(0, 0);
+        const float m11 = m(1, 1);
+        const float m22 = m(2, 2);
+        const float sum = m00 + m11 + m22;
 
-        if (sum > 0.0F) {
+        if (sum > 0.0f) {
             w = sqrt(sum + 1.0f) * 0.5f;
-            float f = 0.25F / w;
+            float f = 0.25f / w;
 
             x = (m(2, 1) - m(1, 2)) * f;
             y = (m(0, 2) - m(2, 0)) * f;
@@ -139,19 +154,19 @@ struct quaternion {
      */
     mat4 getRotationMatrix()
     {
-        float x2 = x * x;
-        float y2 = y * y;
-        float z2 = z * z;
-        float xy = x * y;
-        float xz = x * z;
-        float yz = y * z;
-        float wx = w * x;
-        float wy = w * y;
-        float wz = w * z;
+        const float x2 = x * x;
+        const float y2 = y * y;
+        const float z2 = z * z;
+        const float xy = x * y;
+        const float xz = x * z;
+        const float yz = y * z;
+        const float wx = w * x;
+        const float wy = w * y;
+        const float wz = w * z;
 
-        return mat4(1.0F - 2.0F * (y2 + z2), 2.0F * (xy - wz), 2.0F * (xz + wy), 0,
-                    2.0F * (xy + wz), 1.0F - 2.0F * (x2 + z2), 2.0F * (yz - wx), 0,
-                    2.0F * (xz - wy), 2.0F * (yz + wx), 1.0F - 2.0F * (x2 + y2), 0,
+        return mat4(1.0f - 2.0f * (y2 + z2), 2.0f * (xy - wz), 2.0f * (xz + wy), 0,
+                    2.0f * (xy + wz), 1.0f - 2.0f * (x2 + z2), 2.0f * (yz - wx), 0,
+                    2.0f * (xz - wy), 2.0f * (yz + wx), 1.0f - 2.0f * (x2 + y2), 0,
                     0, 0, 0, 1);
     }
 };
@@ -192,7 +207,7 @@ inline quaternion Conjugate(const quaternion& q)
 inline vec3 rotate(const vec3& v, const quaternion& q)
 {
     const vec3& b = q.GetVectorPart();
-    float b2 = b.x * b.x + b.y * b.y + b.z * b.z;
+    const float b2 = b.x * b.x + b.y * b.y + b.z * b.z;
     return (v * (q.w * q.w - b2) + b * (dot(v, b) * 2.0f)
             + cross(b, v) * (q.w * 2.0f));
 }
@@ -200,18 +215,9 @@ inline vec3 rotate(const vec3& v, const quaternion& q)
 /**
  * @param angle Angle in radians
  */
-inline quaternion rotation(float angle, const vec3& unitVec)
-{
-    float halfAngle = angle * 0.5f;
-    return quaternion((unitVec * sin(halfAngle)), cos(halfAngle));
-}
-
-/**
- * @param angle Angle in radians
- */
 inline quaternion rotationX(float angle)
 {
-    float halfAngle = angle * 0.5f;
+    const float halfAngle = angle * 0.5f;
     return quaternion(sin(halfAngle), 0, 0, cos(halfAngle));
 }
 
@@ -220,7 +226,7 @@ inline quaternion rotationX(float angle)
  */
 inline quaternion rotationY(float angle)
 {
-    float halfAngle = angle * 0.5f;
+    const float halfAngle = angle * 0.5f;
     return quaternion(0, sin(halfAngle), 0, cos(halfAngle));
 }
 
@@ -229,7 +235,7 @@ inline quaternion rotationY(float angle)
  */
 inline quaternion rotationZ(float angle)
 {
-    float halfAngle = angle * 0.5f;
+    const float halfAngle = angle * 0.5f;
     return quaternion(0, 0, sin(halfAngle), cos(halfAngle));
 }
 } // namespace lia
