@@ -2,21 +2,23 @@
 
 #include "mathbase.h"
 
+#include <ostream>
+
 namespace lia {
 struct vec3 {
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
+    float x {0.0f};
+    float y {0.0f};
+    float z {0.0f};
 
     vec3() = default;
 
-    vec3(float xx, float yy, float zz)
+    vec3(const float xx, const float yy, const float zz)
         : x(xx)
         , y(yy)
         , z(zz)
     { }
 
-    vec3(float scalar)
+    vec3(const float scalar)
         : x(scalar)
         , y(scalar)
         , z(scalar)

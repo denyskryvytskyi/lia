@@ -6,3 +6,5 @@
 
 #include "mat4.h"
 #include "quaternion.h"
+
+#include "mathbase.h"

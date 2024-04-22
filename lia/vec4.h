@@ -2,23 +2,25 @@
 
 #include "mathbase.h"
 
+#include <ostream>
+
 namespace lia {
 struct vec4 {
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-    float w = 0.0f;
+    float x { 0.0f };
+    float y { 0.0f };
+    float z { 0.0f };
+    float w { 0.0f };
 
     vec4() = default;
 
-    vec4(float xx, float yy, float zz, float ww)
+    vec4(const float xx, const float yy, const float zz, const float ww)
         : x(xx)
         , y(yy)
         , z(zz)
         , w(ww)
     { }
 
-    vec4(float scalar)
+    vec4(const float scalar)
         : x(scalar)
         , y(scalar)
         , z(scalar)
