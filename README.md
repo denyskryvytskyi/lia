@@ -1,15 +1,15 @@
 # lia
-Mathematics library for 3D Computer Graphics Programming
+Mathematics Library for 3D Computer Graphics Programming
 
 ## Getting Started
 
-You can clone repository:
+You can clone the repository:
 
 `git clone https://github.com/kryvytskyidenys/lia`
 
-You can add lia as static library to your project using cmake.
+You can add lia as a static library to your project using CMake.
 
-Also there is tests.cpp file with usage examples.
+Also, there are tests with usage examples.
 
 ## Features
 
@@ -18,6 +18,6 @@ Also there is tests.cpp file with usage examples.
   + 4x4-dimensional matrices
   + transformations (translations, rotation, scale)
   + utility (matrix transposition, inversion)
-  + orthographic and perpective projections matrices
-- Trigonemetry
+  + orthographic and perspective projections matrices
+- Trigonometry
   + radian/degree conversions.
